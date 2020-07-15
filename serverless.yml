@@ -1,0 +1,35 @@
+service: nestjs-serverless-sample
+
+plugins:
+  - serverless-layers
+  - serverless-offline
+
+provider:
+  name: aws
+  profile: takemoto-serverless-agent
+  runtime: nodejs12.x
+  region: us-east-1
+  memorySize: 256
+  versionFunctions: false
+  deploymentBucket:
+    name: cloudformation-nestjs-serverless-sample
+
+package:
+  individually: true
+  include:
+    - dist/**
+  exclude:
+    - "**"
+
+functions:
+  index:
+    handler: dist/index.handler
+    events:
+      - http:
+          cors: true
+          path: "/"
+          method: any
+      - http:
+          cors: true
+          path: "{proxy+}"
+          method: any
