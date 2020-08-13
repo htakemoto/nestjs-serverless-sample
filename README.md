@@ -97,10 +97,12 @@ cd nestjs-serverless-sample
 # import required plugins
 npm i -S aws-lambda aws-serverless-express express
 npm i -D @types/aws-serverless-express serverless-layers serverless-offline
+npm i -S @nestjs/config
 # add lambda function root file. This will wrap NestJS main.ts
 touch src/index.ts
 # add deployment config
 touch serverless.yml
+touch .env
 ```
 
 I also edited `package.json` to add deploy commands:

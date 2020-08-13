@@ -7,12 +7,15 @@ plugins:
 provider:
   name: aws
   profile: takemoto-serverless-agent
+  stage: ${opt:stage, 'dev'}
   runtime: nodejs12.x
   region: us-east-1
   memorySize: 256
   versionFunctions: false
   deploymentBucket:
     name: cloudformation-nestjs-serverless-sample
+  apiKeys:
+    - ${self:provider.stage}-${self:service}
 
 package:
   individually: true
@@ -24,6 +27,12 @@ package:
 functions:
   index:
     handler: dist/index.handler
+    environment:
+      DB_HOST: ${self:provider.stage}-db-host
+      DB_PORT: ${self:provider.stage}-db-port
+      DB_DATABASE: ${self:provider.stage}-db-database
+      DB_USERNAME: ${self:provider.stage}-db-username
+      DB_PASSWORD: ${self:provider.stage}-db-password~true
     events:
       - http:
           cors: true
